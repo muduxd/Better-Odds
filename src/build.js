@@ -63,8 +63,6 @@ const processFiles = (dir, distDir, minify) => {
             }
         } 
         else {
-            if (["todo.txt", "README.md", ".gitignore", "build.js"].includes(fileName)) return
-
             let minifiedContent = null
 
             if (minify) {
@@ -93,7 +91,9 @@ const processFiles = (dir, distDir, minify) => {
 const main = () => {
     // Directories
     const distDir = path.join(__dirname, '../dist')
-    const projectDir = path.join(__dirname, '../')
+    const publicDir = path.join(__dirname, '../public')
+    const viewsDir = path.join(__dirname, '../src/views')
+
 
 
     // Ensure dist directory exists
@@ -102,7 +102,8 @@ const main = () => {
     }
 
 
-    processFiles(projectDir, distDir, false)
+    processFiles(publicDir, distDir, true)
+    processFiles(viewsDir, distDir, true)
 }
 
 
