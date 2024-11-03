@@ -1,0 +1,24 @@
+{
+  "name": "better-odds",
+  "version": "1.0.0",
+  "description": "A place to download content for different social media apps",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build": "node src/build.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "html-minifier": "^4.0.0",
+    "nodemon": "^3.1.7",
+    "uglify-js": "^3.19.3"
+  },
+  "keywords": [],
+  "author": "Mudu",
+  "license": "ISC"
+}

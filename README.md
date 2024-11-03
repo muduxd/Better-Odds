@@ -1,0 +1,1 @@
+# Odds calculator for guaranteed win
