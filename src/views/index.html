@@ -19,14 +19,25 @@
         <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon" />
         <script src="../js/index.js" defer></script>
         <script src="../js/theme.js" defer></script>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SKQVN2Z3PW"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471274671441146" crossorigin="anonymous"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-SKQVN2Z3PW');
+        </script>
     </head>
 
     <body>
         <nav>
-            <a class="logo" href="/">
+            <div class="logo">
                 <img src="../images/favicon.png" alt="Logo">
                 <h1>BetTer Odds</h1>
-            </a>
+            </div>
+
             <button id="theme-toggle" aria-label="Toggle theme">
                 <svg class="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <!-- Sun icon for dark mode -->
@@ -43,22 +54,26 @@
             </button>
         </nav>
 
+
+
         <header>
-            <a class="logo" href="/">
+            <div class="logo">
                 <img src="../images/favicon.png" alt="Logo">
                 <h1>BetTer Odds</h1>
-            </a>
+            </div>
             <h2>Odds Calculator For Guaranteed Win</h2>
         </header>
 
+
+
         <main>
             <div class="grid">
-                <h3>Arbitrage Calculator</h3>
+                <h3>Arbitrage Calculator</h3>   
                 
                 <div class="bets">
                     <div class="bet">
                         <label for="bet-1">Bet 1</label>
-                        <input type="number" id="bet-1" class="bet-input" placeholder="Enter odds"> 
+                        <input type="number" id="bet-1" class="bet-input" placeholder="Enter odds" step="0.1"> 
 
                         <div class="result">
                             <span>$ 0.00</span>
@@ -71,7 +86,7 @@
 
                     <div class="bet">
                         <label for="bet-2">Bet 2</label>
-                        <input type="number" id="bet-2" class="bet-input" placeholder="Enter odds">
+                        <input type="number" id="bet-2" class="bet-input" placeholder="Enter odds" step="0.1">
 
                         <div class="result">
                             <span>$ 0.00</span>
@@ -103,19 +118,25 @@
             </div>
         </main>
 
+
+        <p>
+
+        </p>
+
+
+
+
+
+
+
         <footer>
-            <h1>Better Odds</h1>
+            <div class="logo">
+                <img src="../images/favicon.png" alt="Logo">
+                <h1>BetTer Odds</h1>
+            </div>
         </footer>
 
 
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SKQVN2Z3PW"></script>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471274671441146" crossorigin="anonymous"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
 
-            gtag('config', 'G-SKQVN2Z3PW');
-        </script>
     </body>
 </html>

@@ -1,8 +1,82 @@
 let odds = [0, 0]
-const totalStake = 0
+let totalStake = ""
 
 
 
+
+
+// INPUT EVENT HANDLERS
+
+const handleNumberChange = (event) => {
+    const value = event.target.value.trim()
+
+    if (+value <= 0 || isNaN(value) || value === "" || value.length === 0) {
+        return ""
+    }
+
+    return value
+}
+
+
+
+const handleNumberInput = (event) => {
+    let value = event.target.value.trim()
+
+    if (value < 0 || value[0] === "0") {
+        value = ""
+    }
+
+    return value
+}
+
+
+
+const handleNumberKeyDown = (event) => {
+    if (event.key === '-') {
+        event.preventDefault()
+        return
+    }
+
+    if (event.key === 'ArrowDown') {
+        const value = event.target.value.trim()
+
+        if (+value === 0 || value === "") {
+            event.preventDefault()
+            event.target.value = ""
+            return
+        }
+    }
+}
+
+
+
+const attachNumberInputHandlers = (inputElement, onChangeCallback = null) => {
+    inputElement.addEventListener('input', (event) => {
+        const value = handleNumberInput(event)
+        if (onChangeCallback) onChangeCallback(value)
+    })
+
+    inputElement.addEventListener('keydown', handleNumberKeyDown)
+
+    inputElement.addEventListener('change', (event) => {
+        const value = handleNumberChange(event)
+        if (onChangeCallback) onChangeCallback(value)
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// UI CRUD FUNTIONS
 
 const renderBets = () => {
     const bets = document.querySelector(".bets")
@@ -10,7 +84,17 @@ const renderBets = () => {
 
 
     for (let i = 0; i < odds.length; i++) {
-        document.querySelector(".bets").innerHTML += `<div class="bet"><label for="bet-${i + 1}">Bet ${i + 1}</label><input type="number" id="bet-${i + 1}" value=${odds[i]} class="bet-input" placeholder="Enter odds"><div class="result"><span>$ 0.00</span></div><div class="result"><span>$ 0.00</span></div></div>`
+        document.querySelector(".bets").innerHTML += `<div class="bet"><label for="bet-${i + 1}">Bet ${i + 1}</label><input type="number" id="bet-${i + 1}" value="${odds[i] > 0 ? odds[i] : ""}" class="bet-input" placeholder="Enter odds" step="0.1"><div class="result"><span>$ 0.00</span></div><div class="result"><span>$ 0.00</span></div></div>`
+        const betInput = document.getElementById(`bet-${i + 1}`)
+
+        attachNumberInputHandlers(betInput, (value) => {
+            console.log("VALUE", value, i)
+            odds[i] = value
+            console.log(odds)
+
+            calculateBets()
+        })
+
     }
 
     removeButtonController()
@@ -51,8 +135,12 @@ const reset = () => {
 
 
 const calculateBets = () => {
-    if (totalStake <= 0) return
-}
+    console.log(totalStake)
+
+    if (!totalStake || totalStake <= 0) {
+        return
+    }
+} 
 
 
 const removeButtonController = () => {
@@ -81,24 +169,26 @@ const removeButtonController = () => {
 }
 
 
-const handleInputValues = (event) => {
-    console.log("kjflsj")
-    if (event.target.value[event.target.value.length - 1] === "-") {
-    console.log("da")
 
-        event.target.value = event.target.value.substring(0, event.target.value.length - 1)
-    }
-}
 
+
+
+
+
+
+// LOAD EVENT LISTENERS ON DOCUMENT LOAD
 
 
 
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("add-bet-button").addEventListener("click", addBet)
     document.getElementById("reset-button").addEventListener("click", reset)
-    document.querySelectorAll("input").forEach(element => element.addEventListener("input", handleInputValues))
+
+
+    attachNumberInputHandlers(document.getElementById("total-stake"), (value) => {
+        totalStake = value
+        calculateBets()
+    })
 
     renderBets()
 })
-
-
