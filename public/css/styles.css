@@ -67,16 +67,15 @@ nav {
 }
 
 .logo img {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
 }
 
 .logo h1 {
     color: var(--accent-color);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
-
 
 
 .remove-bet-button {

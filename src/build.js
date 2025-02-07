@@ -5,8 +5,6 @@ const CleanCSS = require('clean-css')
 const UglifyJS = require('uglify-js')
 
 
-
-
 // Function to minify HTML
 const minifyHTML = (filePath) => {
     const html = fs.readFileSync(filePath, 'utf8')
@@ -20,15 +18,12 @@ const minifyHTML = (filePath) => {
     return minified
 }
 
-
-
 // Function to minify CSS
 const minifyCSS = (filePath) => {
     const css = fs.readFileSync(filePath, 'utf8')
     const output = new CleanCSS().minify(css)
     return output.styles
 }
-
 
 // Function to minify JS
 const minifyJS = (filePath) => {
@@ -37,12 +32,6 @@ const minifyJS = (filePath) => {
     if (result.error) throw result.error
     return result.code
 }
-
-
-
-const minifiedFolders = ["views", "css", "pages", "js"]
-
-
 
 // Recursively process files
 const processFiles = (dir, distDir, minify) => {
@@ -59,7 +48,7 @@ const processFiles = (dir, distDir, minify) => {
                     fs.mkdirSync(distPath)
                 }
 
-                processFiles(filePath, distPath, minifiedFolders.includes(fileName))
+                processFiles(filePath, distPath, ["views", "css", "pages", "js"].includes(fileName))
             }
         } 
         else {
@@ -85,27 +74,19 @@ const processFiles = (dir, distDir, minify) => {
 }
 
 
-
-
-
 const main = () => {
     // Directories
     const distDir = path.join(__dirname, '../dist')
     const publicDir = path.join(__dirname, '../public')
     const viewsDir = path.join(__dirname, '../src/views')
 
-
-
     // Ensure dist directory exists
     if (!fs.existsSync(distDir)) {
         fs.mkdirSync(distDir)
     }
 
-
     processFiles(publicDir, distDir, true)
     processFiles(viewsDir, distDir, true)
 }
-
-
 
 main()
