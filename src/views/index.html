@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <script>
+            // Immediately check and apply theme
+            (function() {
+                const theme = localStorage.getItem('theme') || 'light';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+        </script>
+
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,17 +49,19 @@
             </div>
 
             <button id="theme-toggle" aria-label="Toggle theme">
-                <svg class="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <!-- Sun icon for dark mode -->
-                    <circle cx="12" cy="12" r="5" class="sun-icon"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3" class="sun-icon"></line>
-                    <line x1="12" y1="21" x2="12" y2="23" class="sun-icon"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" class="sun-icon"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" class="sun-icon"></line>
-                    <line x1="1" y1="12" x2="3" y2="12" class="sun-icon"></line>
-                    <line x1="21" y1="12" x2="23" y2="12" class="sun-icon"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" class="sun-icon"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" class="sun-icon"></line>
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button>
         </nav>
@@ -76,10 +88,12 @@
                         <input type="number" id="bet-1" class="bet-input" placeholder="Enter odds" step="0.1"> 
 
                         <div class="result">
+                            <span class="result-label">Bet Stake: </span>
                             <span>$ 0.00</span>
                         </div>
 
                         <div class="result">
+                            <span class="result-label">Payout: </span>
                             <span>$ 0.00</span>
                         </div>
                     </div>
@@ -89,10 +103,12 @@
                         <input type="number" id="bet-2" class="bet-input" placeholder="Enter odds" step="0.1">
 
                         <div class="result">
+                            <span class="result-label">Bet Stake: </span>
                             <span>$ 0.00</span>
                         </div>
                         
                         <div class="result">
+                            <span class="result-label">Payout: </span>
                             <span>$ 0.00</span>
                         </div>
                     </div>
@@ -103,7 +119,10 @@
                 <div class="button-group">
                     <div class="action-buttons">
                         <button id="add-bet-button">
-                            Add Bet +
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                            Add Bet
                         </button>
                         <button id="reset-button">
                             Reset
@@ -116,16 +135,51 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="grid">
+                <h2>How to Use the Arbitrage Calculator</h2>
+                
+                <div class="paragraph-container">
+                    <h3>What is Arbitrage Betting?</h3>
+                    <p>
+                        Arbitrage betting (also known as arbing) is a betting strategy that takes advantage of different odds offered by different bookmakers. 
+                        When the combined probability of all outcomes is less than 100%, there's an opportunity for guaranteed profit.
+                    </p>
+                </div>
+
+                <div class="paragraph-container">
+                    <h3>Using the Calculator</h3>
+                    <p>
+                        1. Enter your total stake amount (the total money you want to invest)<br>
+                        2. Input the decimal odds for each bet (minimum 2 bets required)<br>
+                        3. Add more bets using the "Add" button if needed<br>
+                        4. The calculator will automatically show if there's a profitable arbitrage opportunity
+                    </p>
+                </div>
+
+                <div class="paragraph-container">
+                    <h3>Example</h3>
+                    <p>
+                        Let's say you find these odds for a tennis match:<br>
+                        <span class="bullet">•</span>Player A: 2.10 (Bookmaker 1)<br>
+                        <span class="bullet">•</span>Player B: 2.05 (Bookmaker 2)<br>
+                        With a $100 total stake, this calculator will show you it's profitable because:<br>
+                        1/2.10 + 1/2.05 = 0.476 + 0.488 = 0.964 (96.4% total probability)
+                    </p>
+                </div>
+
+                <div class="paragraph-container">
+                    <h3>Understanding Results</h3>
+                    <p>
+                        <span class="bullet">•</span>Stake: The amount to bet on each outcome<br>
+                        <span class="bullet">•</span>Payout: Your return if that outcome wins<br>
+                        <span class="bullet">•</span>Green message: Profitable opportunity (shows expected profit)<br>
+                        <span class="bullet">•</span>Red message: Not profitable (total probability exceeds 100%)
+                    </p>
+                </div>
+            </div>
         </main>
-
-
-        <p>
-
-        </p>
-
-
-
-
 
 
 
@@ -135,8 +189,5 @@
                 <h1>BetTer Odds</h1>
             </div>
         </footer>
-
-
-
     </body>
 </html>

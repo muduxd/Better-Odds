@@ -1,194 +1,246 @@
-let odds = [0, 0]
-let totalStake = ""
-
-
-
-
-
-// INPUT EVENT HANDLERS
-
-const handleNumberChange = (event) => {
-    const value = event.target.value.trim()
-
-    if (+value <= 0 || isNaN(value) || value === "" || value.length === 0) {
-        return ""
-    }
-
-    return value
+// State management
+const state = {
+    bets: [{ odds: '' }, { odds: '' }],
+    totalStake: ''
 }
 
+// Utility functions
+const formatCurrency = (amount) => `$ ${Number(amount).toFixed(2)}`
 
+const calculateArbitrage = (bets, totalStake) => {
+    const validBets = bets.filter(bet => bet.odds > 0)
+    if (validBets.length < 2 || !totalStake || totalStake <= 0) {
+        return null
+    }
 
+    const impliedProbabilities = bets.map(bet => 1 / bet.odds)
+    const totalProbability = impliedProbabilities.reduce((sum, prob) => sum + prob, 0)
+    const isArbitrage = totalProbability < 1
+
+    const stakes = impliedProbabilities.map(prob => (totalStake * prob) / totalProbability)
+    const payouts = stakes.map((stake, i) => stake * bets[i].odds)
+    
+    return {
+        isArbitrage,
+        totalProbability,
+        stakes,
+        payouts,
+        profit: isArbitrage ? (totalStake / totalProbability - totalStake) : 0
+    }
+}
+
+// UI Components
+const createBetElement = (index, bet, onRemove) => {
+    const betDiv = document.createElement('div')
+    betDiv.className = 'bet'
+    
+    betDiv.innerHTML = `
+        <label for="bet-${index + 1}">Bet ${index + 1}</label>
+        <input type="number" 
+               id="bet-${index + 1}" 
+               value="${bet.odds}" 
+               class="bet-input" 
+               placeholder="Enter odds" 
+               step="0.1"
+               min="0">
+        <div class="result">
+            <span class="result-label">Bet Stake: </span>
+            <span>${formatCurrency(0)}</span>
+        </div>
+        <div class="result">
+            <span class="result-label">Payout: </span>
+            <span>${formatCurrency(0)}</span>
+        </div>
+        ${
+            state.bets.length > 2
+                ? `
+            <button class="remove-bet-button" title="Remove bet">
+                <svg width="16" height="16" viewBox="0 0 24 24">
+                    <path fill="#FFFFFF" d="M19 13H5v-2h14v2z"/>
+                </svg>
+            </button>
+        `
+                : ""
+        }
+    `
+
+    if (state.bets.length > 2) {
+        const removeButton = betDiv.querySelector('.remove-bet-button')
+        removeButton.addEventListener('click', () => onRemove(index))
+    }
+
+    return betDiv
+}
+
+const createArbitrageMessage = (result) => {
+    const message = document.createElement('p')
+    message.className = 'arbitrage-message'
+    message.style.textAlign = 'center'
+    message.style.marginTop = '1rem'
+    message.style.fontWeight = 'bold'
+
+    if (result.isArbitrage) {
+        message.style.color = 'green'
+        message.textContent = `Profitable! Expected profit: ${formatCurrency(result.profit)}`
+    } else {
+        message.style.color = 'red'
+        message.textContent = 'Not profitable - Total probability > 100%'
+    }
+
+    return message
+}
+
+// Event Handlers
 const handleNumberInput = (event) => {
     let value = event.target.value.trim()
-
-    if (value < 0 || value[0] === "0") {
-        value = ""
+    
+    if (value < 0 || value[0] === '0' && value[1] !== '.') {
+        event.target.value = ''
+        return ''
     }
 
-    return value
+    // Handle decimal points - keep only the first one
+    const decimalCount = (value.match(/\./g) || []).length
+    if (decimalCount > 1) {
+        const parts = value.split('.')
+        value = parts[0] + '.' + parts.slice(1).join('')
+        event.target.value = value
+    }
+
+    return event.target.value
 }
 
-
-
 const handleNumberKeyDown = (event) => {
+    // Prevent negative numbers
     if (event.key === '-') {
         event.preventDefault()
         return
     }
 
-    if (event.key === 'ArrowDown') {
-        const value = event.target.value.trim()
+    // Prevent decimal point if one already exists
+    if (event.key === '.' && event.target.value.includes('.')) {
+        event.preventDefault()
+        return
+    }
 
-        if (+value === 0 || value === "") {
-            event.preventDefault()
-            event.target.value = ""
-            return
+    // Prevent down arrow making number negative
+    if (event.key === 'ArrowDown' && (+event.target.value === 0 || event.target.value === '')) {
+        event.preventDefault()
+        return
+    }
+}
+
+// Main render function
+const render = () => {
+    const betsContainer = document.querySelector('.bets')
+    const currentBets = document.querySelectorAll('.bet')
+    
+    // Only rebuild all bets if the number of bets changed
+    if (currentBets.length !== state.bets.length) {
+        betsContainer.innerHTML = ''
+        state.bets.forEach((bet, index) => {
+            const betElement = createBetElement(index, bet, (index) => {
+                state.bets.splice(index, 1)
+                render()
+            })
+            betsContainer.appendChild(betElement)
+        })
+    }
+    
+    const result = calculateArbitrage(state.bets, state.totalStake)
+    
+    // Update stakes and payouts if we have a valid calculation
+    if (result) {
+        const betElements = document.querySelectorAll('.bet')
+        betElements.forEach((betElement, index) => {
+            const resultSpans = betElement.querySelectorAll('.result span:not(.result-label)')
+            resultSpans[0].textContent = formatCurrency(result.stakes[index] || 0)
+            resultSpans[1].textContent = formatCurrency(result.payouts[index] || 0)
+        })
+
+        // Update or create arbitrage message
+        const existingMessage = document.querySelector('.arbitrage-message')
+        if (existingMessage) {
+            existingMessage.remove()
+        }
+        document.querySelector('.grid').appendChild(createArbitrageMessage(result))
+    } else {
+        // Clear previous results when calculation is invalid
+        const resultSpans = document.querySelectorAll('.result span:not(.result-label)')
+        resultSpans.forEach(span => {
+            span.textContent = formatCurrency(0)
+        })
+        
+        // Remove arbitrage message if exists
+        const existingMessage = document.querySelector('.arbitrage-message')
+        if (existingMessage) {
+            existingMessage.remove()
         }
     }
 }
 
-
-
-const attachNumberInputHandlers = (inputElement, onChangeCallback = null) => {
-    inputElement.addEventListener('input', (event) => {
-        const value = handleNumberInput(event)
-        if (onChangeCallback) onChangeCallback(value)
-    })
-
-    inputElement.addEventListener('keydown', handleNumberKeyDown)
-
-    inputElement.addEventListener('change', (event) => {
-        const value = handleNumberChange(event)
-        if (onChangeCallback) onChangeCallback(value)
-    })
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// UI CRUD FUNTIONS
-
-const renderBets = () => {
-    const bets = document.querySelector(".bets")
-    bets.innerHTML = ""
-
-
-    for (let i = 0; i < odds.length; i++) {
-        document.querySelector(".bets").innerHTML += `<div class="bet"><label for="bet-${i + 1}">Bet ${i + 1}</label><input type="number" id="bet-${i + 1}" value="${odds[i] > 0 ? odds[i] : ""}" class="bet-input" placeholder="Enter odds" step="0.1"><div class="result"><span>$ 0.00</span></div><div class="result"><span>$ 0.00</span></div></div>`
-        const betInput = document.getElementById(`bet-${i + 1}`)
-
-        attachNumberInputHandlers(betInput, (value) => {
-            console.log("VALUE", value, i)
-            odds[i] = value
-            console.log(odds)
-
-            calculateBets()
-        })
-
-    }
-
-    removeButtonController()
-}
-
-
-
-
-
-const addBet = () => {
-    odds.push(0)
-    renderBets()            
-}
-
-
-
-const removeBet = (index) => {
-    const totalBets = document.querySelector(".bets")
-    if (totalBets.children.length <= index) return
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    // Setup add button
+    const addButton = document.getElementById('add-bet-button')
+    addButton.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        Add`
     
-
-    odds.splice(index, 1)
-    renderBets()
-    calculateBets()
-}
-
-
-
-const reset = () => {
-    odds = [0, 0]
-    renderBets()
-}
-
-
-
-
-
-
-
-const calculateBets = () => {
-    console.log(totalStake)
-
-    if (!totalStake || totalStake <= 0) {
-        return
-    }
-} 
-
-
-const removeButtonController = () => {
-    const totalBets = document.querySelectorAll(".bet")
-
-
-
-
-
-    // if (totalBets.length > 2) {
-    //     for (let i = 0; i < totalBets.length; i++) {
-    //         if (!totalBets[i].querySelector("#remove-bet-button"))
-    //             totalBets[i].innerHTML += '<button id="remove-bet-button">-</button>'
-            
-    //         totalBets[i].querySelector("#remove-bet-button").removeEventListener("click", () => { removeBet(i) })
-    //         totalBets[i].querySelector("#remove-bet-button").addEventListener("click", () => { removeBet(i) })
-    //     }
-    // }
-    // else {
-    //     for (let i = 0; i < totalBets.length; i++) {
-    //         if (totalBets[i].querySelector("#remove-bet-button"))
-    //             totalBets[i].removeChild(totalBets[i].querySelector("#remove-bet-button"))
-    //     }
-    // }
-
-}
-
-
-
-
-
-
-
-
-
-// LOAD EVENT LISTENERS ON DOCUMENT LOAD
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("add-bet-button").addEventListener("click", addBet)
-    document.getElementById("reset-button").addEventListener("click", reset)
-
-
-    attachNumberInputHandlers(document.getElementById("total-stake"), (value) => {
-        totalStake = value
-        calculateBets()
+    addButton.addEventListener('click', () => {
+        state.bets.push({ odds: '' })
+        render()
     })
 
-    renderBets()
+    // Setup reset button
+    document.getElementById('reset-button').addEventListener('click', () => {
+        state.bets = [{ odds: '' }, { odds: '' }]
+        state.totalStake = ''
+        document.getElementById('total-stake').value = ''
+        render()
+    })
+
+    // Setup total stake input
+    const totalStakeInput = document.getElementById('total-stake')
+    totalStakeInput.setAttribute('step', '0.1')
+    totalStakeInput.setAttribute('min', '0')
+    totalStakeInput.addEventListener('input', (event) => {
+        state.totalStake = handleNumberInput(event)
+        render()
+    })
+    totalStakeInput.addEventListener('keydown', handleNumberKeyDown)
+
+    // Setup initial bet inputs
+    document.addEventListener('input', (event) => {
+        if (event.target.classList.contains('bet-input')) {
+            const index = parseInt(event.target.id.split('-')[1]) - 1
+            const value = handleNumberInput(event)
+            state.bets[index].odds = value
+            
+            // Only render if we have valid odds and total stake
+            if (state.totalStake && state.bets.some(bet => bet.odds > 0)) {
+                render()
+            }
+        }
+    })
+
+    document.addEventListener('change', (event) => {
+        if (event.target.classList.contains('bet-input')) {
+            render()
+        }
+    })
+
+    document.addEventListener('keydown', (event) => {
+        if (event.target.classList.contains('bet-input')) {
+            handleNumberKeyDown(event)
+        }
+    })
+
+    // Add info section below calculator
+    const calculatorGrid = document.querySelector('.grid')
+
+    // Initial render
+    render()
 })

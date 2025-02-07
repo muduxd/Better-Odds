@@ -79,21 +79,87 @@ nav {
 
 
 
+.remove-bet-button {
+    background: #ff4444;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.remove-bet-button:hover {
+    background: #ff0000;
+    transform: scale(1.1);
+}
+
+.remove-bet-button svg {
+    transition: transform 0.2s ease;
+}
+
+.remove-bet-button:hover svg {
+    transform: rotate(180deg);
+}
+
+#add-bet-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
 
 
+.arbitrage-message {
+    margin-top: 1rem;
+    padding: 8px;
+    border-radius: 4px;
+    background: rgba(36, 36, 36, 0.1);
+}
 
+
+/* Theme toggle button */
 #theme-toggle {
     background-color: transparent;
     border: 1px solid var(--border-color);
     padding: 0.5rem;
-    border-radius: 9999px;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     color: var(--text-primary);
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 #theme-toggle:hover {
     background-color: var(--secondary-bg);
+}
+
+#theme-toggle .sun-icon,
+#theme-toggle .moon-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.5s ease;
+}
+
+/* Sun icon animation */
+.dark #theme-toggle .sun-icon {
+    transform: translate(-50%, -50%) rotate(180deg) scale(0);
+}
+
+/* Moon icon animation */
+#theme-toggle .moon-icon {
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0);
+}
+
+.dark #theme-toggle .moon-icon {
+    transform: translate(-50%, -50%) rotate(0) scale(1);
 }
 
 /* Header */
@@ -126,6 +192,7 @@ main {
     box-shadow: var(--shadow-md);
     padding: 1.5rem;
     border: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
 }
 
 .grid > h3 {
@@ -133,6 +200,57 @@ main {
     margin-bottom: 1.5rem;
     font-size: 1.25rem;
     color: var(--text-primary);
+}
+
+.paragraph-container {
+    margin-bottom: 1.5rem;
+}
+
+/* Paragraph sections */
+.grid h2 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+}
+
+.paragraph-container h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.75rem;
+}
+
+.paragraph-container p {
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* List-style items in paragraphs */
+.paragraph-container p {
+    padding-left: 0.5rem;
+}
+
+.paragraph-container p span.bullet {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+/* Labels */
+.bet label {
+    color: var(--accent-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.stake-group label {
+    color: var(--accent-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* Result labels */
+.result span {
+    font-weight: 500;
 }
 
 .bets {
@@ -143,16 +261,9 @@ main {
 
 .bet {
     display: grid;
-    grid-template-columns: 6rem 1fr 6rem 6rem auto;
+    grid-template-columns: 6rem 1fr 7rem 6rem auto;
     gap: 1rem;
     align-items: center;
-}
-
-.bet label {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    font-weight: 500;
-    flex-shrink: 0;
 }
 
 .bet-input {
@@ -176,6 +287,13 @@ main {
     font-size: 0.875rem;
     color: var(--text-secondary);
 }
+
+.result-label {
+    font-weight: 500;
+    color: var(--accent-color);
+}
+
+
 
 .button-group {
     display: flex;
@@ -216,13 +334,6 @@ button {
     gap: 1rem;
 }
 
-.stake-group label {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    font-weight: 500;
-    flex-shrink: 0;
-}
-
 .stake-group input {
     width: 8rem;
     padding: 0.5rem;
@@ -258,7 +369,7 @@ footer h1 {
 /* Responsive Design */
 @media (max-width: 640px) {
     .bet {
-        grid-template-columns: 4rem 1fr 4rem 4rem;
+        grid-template-columns: 4rem 1fr 5rem 4rem;
         font-size: 0.875rem;
     }
     
@@ -275,4 +386,77 @@ footer h1 {
     .stake-group input {
         width: 60%;
     }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border: 1px solid var(--secondary-bg);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+
+/* 404 Page Styles */
+.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-content h1 {
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.error-content p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.home-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.home-button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.home-button svg {
+    transition: transform 0.2s ease;
+}
+
+.home-button:hover svg {
+    transform: scale(1.1);
 }
