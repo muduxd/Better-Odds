@@ -238,9 +238,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    // Add info section below calculator
-    const calculatorGrid = document.querySelector('.grid')
-
-    // Initial render
     render()
 })

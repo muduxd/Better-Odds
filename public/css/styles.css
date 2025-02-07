@@ -388,6 +388,13 @@ footer h1 {
     }
 }
 
+@media (max-width: 480px) {
+    .bet {
+        grid-template-columns: 2rem 0.5fr 2.5rem 2rem;
+        font-size: 0.875rem;
+    }
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
     width: 8px;

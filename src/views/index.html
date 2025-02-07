@@ -2,7 +2,6 @@
 <html lang="en">
     <head>
         <script>
-            // Immediately check and apply theme
             (function() {
                 const theme = localStorage.getItem('theme') || 'light';
                 if (theme === 'dark') {
@@ -14,18 +13,51 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="arbitrage betting, betting, odds, better odds, odds calculator, safe betting, betting strategy, profit, win" />
-        <meta name="description" content="Odds Calculator For Guaranteed Win" />
+        <meta name="keywords" content="arbitrage betting calculator, sports arbitrage, sure bets, betting arbitrage, odds calculator, betting strategy, guaranteed profit betting, arbing calculator, sports betting calculator, risk-free betting" />
+        <meta name="description" content="Free arbitrage betting calculator. Calculate guaranteed profits from sports betting arbitrage opportunities. Find sure bets and optimize your stakes across different bookmakers." />
+        <meta name="author" content="BetTer Odds" />
+        <meta name="robots" content="index, follow" />
         
-        <meta property="og:type" />
-        <meta property="og:title" content="BetTer Odds | Odds Calculator" />
-        <meta property="og:description" content="Odds Calculator For Guaranteed Win" />
-        <meta property="og:image" content="../images/favicon.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="BetTer Odds | Arbitrage Betting Calculator" />
+        <meta property="og:description" content="Free arbitrage betting calculator. Calculate guaranteed profits from sports betting arbitrage opportunities." />
+        <meta property="og:image" content="https://www.betterodds.pro/images/favicon.png" />
+        <meta property="og:url" content="https://www.betterodds.pro" />
+        <meta property="og:site_name" content="BetTer Odds" />
+        
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="BetTer Odds | Arbitrage Betting Calculator" />
+        <meta name="twitter:description" content="Free arbitrage betting calculator. Calculate guaranteed profits from sports betting arbitrage opportunities." />
+        <meta name="twitter:image" content="https://www.betterodds.pro/images/favicon.png" />
 
-        <title>BetTer Odds | Odds Calculator</title>
+        <title>BetTer Odds | Arbitrage Betting Calculator</title>
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "BetTer Odds Arbitrage Calculator",
+            "description": "Free arbitrage betting calculator for calculating guaranteed profits from sports betting.",
+            "url": "https://www.betterodds.pro",
+            "applicationCategory": "CalculatorApplication",
+            "operatingSystem": "Any",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "featureList": [
+                "Arbitrage betting calculations",
+                "Multiple bet support",
+                "Stake optimization",
+                "Profit calculation",
+                "Real-time results"
+            ]
+        }
+        </script>
 
         <link rel="stylesheet" href="../css/styles.css" />
-        <link rel="canonical" href="https://www.betterodds.pro">
+        <link rel="canonical" href="https://www.betterodds.pro" />
         <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon" />
         <script src="../js/index.js" defer></script>
         <script src="../js/theme.js" defer></script>
@@ -35,8 +67,8 @@
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
+            
             gtag('js', new Date());
-
             gtag('config', 'G-SKQVN2Z3PW');
         </script>
     </head>
