@@ -179,6 +179,9 @@ const render = () => {
     }
 }
 
+
+
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     // Setup add button

@@ -8,6 +8,7 @@ const changeTheme = (theme) => {
     }
 }
 
+
 const themeToggle = document.getElementById("theme-toggle");
 
 themeToggle.addEventListener("click", () => {
@@ -15,10 +16,14 @@ themeToggle.addEventListener("click", () => {
     changeTheme(isDark ? "light" : "dark");
 });
 
+
+
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", event => {
     const newColorScheme = event.matches ? "dark" : "light";
     changeTheme(newColorScheme);
 });
+
+
 
 window.onload = () => {
     const savedTheme = localStorage.getItem("theme");
