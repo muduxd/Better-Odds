@@ -1,3 +1,11 @@
+(function () {
+    const theme = localStorage.getItem("theme") || "light"
+    if (theme === "dark") {
+        document.documentElement.classList.add("dark")
+    }
+})()
+
+
 const changeTheme = (theme) => {
     if (theme === "dark") {
         localStorage.setItem("theme", "dark");

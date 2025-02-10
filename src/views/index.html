@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script>
-            (function() {
-                const theme = localStorage.getItem('theme') || 'light';
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                }
-            })();
-        </script>
-
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -56,9 +47,19 @@
         }
         </script>
 
+        <script>
+            (function() {
+                const theme = localStorage.getItem('theme') || 'light';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+        </script>
+
+
         <link rel="stylesheet" href="../css/styles.css" />
         <link rel="canonical" href="https://www.betterodds.pro" />
-        <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon" />
+        <link rel="icon" href="../images/favicon.png" type="image/x-icon" />
         <script src="../js/index.js" defer></script>
         <script src="../js/theme.js" defer></script>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471274671441146" crossorigin="anonymous"></script>
@@ -211,19 +212,6 @@
                 </div>
             </div>
         </main>
-
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471274671441146" crossorigin="anonymous"></script>
-        <!-- Test -->
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-2471274671441146"
-            data-ad-slot="8589719300"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-
 
 
         <footer>
